@@ -32,8 +32,8 @@ func (h *WeatherHandler) GetWeatherDailyByCoordinates(w http.ResponseWriter, r *
 	logger := logging.Ctx(ctx)
 
 	var queries struct {
-		Lat      float32  `schema:"lat"`
-		Lon      float32  `schema:"lon"`
+		Lat      float32  `schema:"lat,required"`
+		Lon      float32  `schema:"lon,required"`
 		Date     string   `schema:"date"`     // YYYY-MM-DD
 		Duration int      `schema:"duration"` // default 1 days, max 126 days
 		Fields   []string `schema:"fields"`   // fields=tc_max,tc_min,rh,slp,psfc,cloudlow,cloudmed,cloudhigh,cond

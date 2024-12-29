@@ -14,6 +14,7 @@ import (
 	"github.com/gorilla/schema"
 	"github.com/imroc/req/v3"
 	"github.com/olajoe/forecast_weather_api/internal/config"
+	"github.com/olajoe/forecast_weather_api/internal/middlewares"
 	v1 "github.com/olajoe/forecast_weather_api/internal/routes/v1"
 	"github.com/olajoe/forecast_weather_api/internal/validator"
 	"github.com/olajoe/forecast_weather_api/internal/weather"
@@ -38,6 +39,9 @@ func main() {
 		gorillaHandlers.AllowedHeaders([]string{"Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin", "x-api-key", "x-secret-key"}),
 	)
 
+	loggerMiddleware := middlewares.NewLoggerMiddleware(logger)
+
+	r.Use(loggerMiddleware.LogResponse)
 	r.HandleFunc("/healthz", https.HealthCheckHandler).Methods(http.MethodGet)
 
 	v1Router := r.PathPrefix("/v1").Subrouter()
