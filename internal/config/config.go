@@ -4,7 +4,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/olajoe/forecast_weather/pkg/logging"
+	"github.com/olajoe/forecast_weather_api/pkg/logging"
 	"github.com/spf13/viper"
 )
 

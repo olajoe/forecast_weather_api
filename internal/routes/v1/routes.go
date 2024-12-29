@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/olajoe/forecast_weather/internal/weather"
+	"github.com/olajoe/forecast_weather_api/internal/weather"
 )
 
 func RegisterRoutes(r *mux.Router, weatherHandler *weather.WeatherHandler) {

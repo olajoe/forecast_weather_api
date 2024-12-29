@@ -5,8 +5,8 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gorilla/schema"
-	"github.com/olajoe/forecast_weather/internal/utils/https"
-	"github.com/olajoe/forecast_weather/pkg/logging"
+	"github.com/olajoe/forecast_weather_api/internal/utils/https"
+	"github.com/olajoe/forecast_weather_api/pkg/logging"
 )
 
 type WeatherHandler struct {

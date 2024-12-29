@@ -13,15 +13,15 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
 	"github.com/imroc/req/v3"
-	"github.com/olajoe/forecast_weather/internal/config"
-	v1 "github.com/olajoe/forecast_weather/internal/routes/v1"
-	"github.com/olajoe/forecast_weather/internal/validator"
-	"github.com/olajoe/forecast_weather/internal/weather"
+	"github.com/olajoe/forecast_weather_api/internal/config"
+	v1 "github.com/olajoe/forecast_weather_api/internal/routes/v1"
+	"github.com/olajoe/forecast_weather_api/internal/validator"
+	"github.com/olajoe/forecast_weather_api/internal/weather"
 
 	gorillaHandlers "github.com/gorilla/handlers"
 
-	"github.com/olajoe/forecast_weather/internal/utils/https"
-	"github.com/olajoe/forecast_weather/pkg/logging"
+	"github.com/olajoe/forecast_weather_api/internal/utils/https"
+	"github.com/olajoe/forecast_weather_api/pkg/logging"
 )
 
 func main() {

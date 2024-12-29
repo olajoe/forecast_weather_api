@@ -1,4 +1,4 @@
-module github.com/olajoe/forecast_weather
+module github.com/olajoe/forecast_weather_api
 
 go 1.23.2
 

@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/imroc/req/v3"
-	"github.com/olajoe/forecast_weather/internal/config"
-	"github.com/olajoe/forecast_weather/internal/utils/https"
+	"github.com/olajoe/forecast_weather_api/internal/config"
+	"github.com/olajoe/forecast_weather_api/internal/utils/https"
 )
 
 type WeatherRepository interface {

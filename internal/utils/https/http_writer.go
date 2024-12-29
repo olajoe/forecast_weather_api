@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/olajoe/forecast_weather/internal/middlewares"
+	"github.com/olajoe/forecast_weather_api/internal/middlewares"
 	"github.com/rs/zerolog"
 )
 
