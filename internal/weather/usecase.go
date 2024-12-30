@@ -7,6 +7,7 @@ import (
 
 type WeatherUsecase interface {
 	GetWeatherDailyByCoordinates(queries GetWeatherDailyQuery) (map[string]interface{}, error)
+	GetWeatherDailyByPlace(queries GetWeatherDailyQuery) (map[string]interface{}, error)
 }
 
 type weatherUsecase struct {
@@ -27,7 +28,7 @@ func (u *weatherUsecase) GetWeatherDailyByCoordinates(queries GetWeatherDailyQue
 		return nil, err
 	}
 
-	result, err := mapWeatherForecastDailyCoordinatesResponseToResult(forecastResponse)
+	result, err := mapWeatherForecastDailyResponseToResult(forecastResponse)
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +36,23 @@ func (u *weatherUsecase) GetWeatherDailyByCoordinates(queries GetWeatherDailyQue
 	return result, nil
 }
 
-func mapWeatherForecastDailyCoordinatesResponseToResult(response *WeatherForecastDailyCoordinatesResponse) (map[string]interface{}, error) {
+func (u *weatherUsecase) GetWeatherDailyByPlace(queries GetWeatherDailyQuery) (map[string]interface{}, error) {
+	queryParams := buildGetWeatherDailyByPlaceQueryParams(queries)
+
+	forecastResponse, err := u.weatherRepository.GetWeatherDailyByPlace(queryParams)
+	if err != nil {
+		return nil, err
+	}
+
+	result, err := mapWeatherForecastDailyResponseToResult(forecastResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
+
+func mapWeatherForecastDailyResponseToResult(response *WeatherForecastDailyResponse) (map[string]interface{}, error) {
 	var result map[string]interface{}
 
 	for _, forecast := range response.WeatherForecasts {

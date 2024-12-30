@@ -9,7 +9,8 @@ import (
 )
 
 type WeatherRepository interface {
-	GetWeatherDailyByCoordinates(queryParams map[string]string) (*WeatherForecastDailyCoordinatesResponse, error)
+	GetWeatherDailyByCoordinates(queryParams map[string]string) (*WeatherForecastDailyResponse, error)
+	GetWeatherDailyByPlace(queryParams map[string]string) (*WeatherForecastDailyResponse, error)
 }
 
 type weatherRepository struct {
@@ -29,8 +30,8 @@ func NewWeatherRepository(
 	}
 }
 
-func (r *weatherRepository) GetWeatherDailyByCoordinates(queryParams map[string]string) (*WeatherForecastDailyCoordinatesResponse, error) {
-	var resultBody WeatherForecastDailyCoordinatesResponse
+func (r *weatherRepository) GetWeatherDailyByCoordinates(queryParams map[string]string) (*WeatherForecastDailyResponse, error) {
+	var resultBody WeatherForecastDailyResponse
 	var errResp https.ErrorResponse
 
 	resp, err := r.client.R().
@@ -40,6 +41,29 @@ func (r *weatherRepository) GetWeatherDailyByCoordinates(queryParams map[string]
 		SetSuccessResult(&resultBody).
 		SetErrorResult(&errResp).
 		Get(fmt.Sprintf("%s/forecast/location/daily/at", r.baseUrl))
+
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.IsErrorState() {
+		return nil, errResp
+	}
+
+	return &resultBody, nil
+}
+
+func (r *weatherRepository) GetWeatherDailyByPlace(queryParams map[string]string) (*WeatherForecastDailyResponse, error) {
+	var resultBody WeatherForecastDailyResponse
+	var errResp https.ErrorResponse
+
+	resp, err := r.client.R().
+		SetHeader("Accept", "application/json").
+		SetHeader("Authorization", fmt.Sprintf("Bearer %s", r.accessToken)).
+		SetQueryParams(queryParams).
+		SetSuccessResult(&resultBody).
+		SetErrorResult(&errResp).
+		Get(fmt.Sprintf("%s/forecast/location/daily/place", r.baseUrl))
 
 	if err != nil {
 		return nil, err

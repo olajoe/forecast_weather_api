@@ -5,13 +5,16 @@ import (
 	"strings"
 )
 
-type WeatherForecast struct {
-	Location struct {
-		Lat float32 `json:"lat"`
-		Lon float32 `json:"lon"`
-	} `json:"location"`
+type Location struct {
+	Province string `json:"province,omitempty"`
+	AreaType string `json:"areatype,omitempty"`
+	Tambon   string `json:"tambon,omitempty"`
+	Amphoe   string `json:"amphoe,omitempty"`
+	Region   string `json:"region,omitempty"`
+	Geocode  string `json:"geocode,omitempty"`
 
-	Forecasts []Forecast `json:"forecasts"`
+	Lat float32 `json:"lat"`
+	Lon float32 `json:"lon"`
 }
 
 type ForecastData struct {
@@ -37,8 +40,13 @@ type Forecast struct {
 	Data ForecastData `json:"data"`
 }
 
-type WeatherForecastDailyCoordinatesResponse struct {
-	WeatherForecasts []WeatherForecast `json:"WeatherForecasts"`
+type WeatherForecastDaily struct {
+	Location  Location   `json:"location,omitempty"`
+	Forecasts []Forecast `json:"forecasts"`
+}
+
+type WeatherForecastDailyResponse struct {
+	WeatherForecasts []WeatherForecastDaily `json:"WeatherForecasts"`
 }
 
 type GetWeatherDailyQuery struct {
@@ -76,6 +84,26 @@ func buildGetWeatherDailyCordinatesQuery(
 	}
 }
 
+func buildGetWeatherDailyPlaceQuery(
+	province string,
+	amphoe string,
+	tambon string,
+	subarea bool,
+	date string,
+	duration int,
+	fields []string,
+) GetWeatherDailyQuery {
+	return GetWeatherDailyQuery{
+		Province: province,
+		Amphoe:   amphoe,
+		Tambon:   tambon,
+		Subarea:  subarea,
+		Date:     date,
+		Duration: duration,
+		Fields:   strings.Join(fields, ","),
+	}
+}
+
 func buildGetWeatherDailyByCoordinatesQueryParams(queries GetWeatherDailyQuery) map[string]string {
 	return map[string]string{
 		"lat":      fmt.Sprintf("%f", queries.Lat),
@@ -84,4 +112,35 @@ func buildGetWeatherDailyByCoordinatesQueryParams(queries GetWeatherDailyQuery) 
 		"duration": fmt.Sprintf("%d", queries.Duration),
 		"fields":   queries.Fields,
 	}
+}
+
+func buildGetWeatherDailyByPlaceQueryParams(queries GetWeatherDailyQuery) map[string]string {
+	result := map[string]string{}
+	if queries.Province != "" {
+		result["province"] = queries.Province
+	}
+	if queries.Amphoe != "" {
+		result["amphoe"] = queries.Amphoe
+	}
+	if queries.Tambon != "" {
+		result["tambon"] = queries.Tambon
+	}
+	if queries.Subarea {
+		result["subarea"] = fmt.Sprintf("%t", queries.Subarea)
+	}
+	if queries.Date != "" {
+		result["date"] = queries.Date
+	}
+	if queries.Duration != 0 {
+		result["duration"] = fmt.Sprintf("%d", queries.Duration)
+	}
+	if queries.Fields != "" {
+		result["fields"] = queries.Fields
+	}
+
+	if len(result) == 0 {
+		return nil
+	}
+
+	return result
 }
