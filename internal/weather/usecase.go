@@ -57,10 +57,7 @@ func mapWeatherForecastDailyResponseToResult(response *WeatherForecastDailyRespo
 
 	for _, forecast := range response.WeatherForecasts {
 		result = map[string]interface{}{
-			"location": map[string]interface{}{
-				"lat": forecast.Location.Lat,
-				"lon": forecast.Location.Lon,
-			},
+			"location":  fulfillLocationValue(forecast.Location),
 			"forecasts": []interface{}{},
 		}
 
@@ -82,6 +79,39 @@ func mapWeatherForecastDailyResponseToResult(response *WeatherForecastDailyRespo
 	}
 
 	return result, nil
+}
+
+func fulfillLocationValue(location Location) map[string]interface{} {
+	result := map[string]interface{}{
+		"lat": location.Lat,
+		"lon": location.Lon,
+	}
+
+	if location.Province != nil {
+		result["province"] = location.Lat
+	}
+
+	if location.Amphoe != nil {
+		result["amphoe"] = location.Amphoe
+	}
+
+	if location.Tambon != nil {
+		result["tambon"] = location.Tambon
+	}
+
+	if location.Region != nil {
+		result["region"] = location.Region
+	}
+
+	if location.Geocode != nil {
+		result["geocode"] = location.Geocode
+	}
+
+	if location.AreaType != nil {
+		result["areatype"] = location.AreaType
+	}
+
+	return result
 }
 
 func fulfillForecastDataValue(forecastData ForecastData) map[string]interface{} {

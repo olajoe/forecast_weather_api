@@ -6,12 +6,12 @@ import (
 )
 
 type Location struct {
-	Province string `json:"province,omitempty"`
-	AreaType string `json:"areatype,omitempty"`
-	Tambon   string `json:"tambon,omitempty"`
-	Amphoe   string `json:"amphoe,omitempty"`
-	Region   string `json:"region,omitempty"`
-	Geocode  string `json:"geocode,omitempty"`
+	Province *string `json:"province,omitempty"`
+	AreaType *string `json:"areatype,omitempty"`
+	Tambon   *string `json:"tambon,omitempty"`
+	Amphoe   *string `json:"amphoe,omitempty"`
+	Region   *string `json:"region,omitempty"`
+	Geocode  *string `json:"geocode,omitempty"`
 
 	Lat float32 `json:"lat"`
 	Lon float32 `json:"lon"`
